@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="http://kozea.github.com/pygal.js/javascripts/svg.jquery.js"></script>
+<script type="text/javascript" src="http://kozea.github.com/pygal.js/javascripts/pygal-tooltips.js"></script>
+
+<div class="container">
+  <div class="jumbotron">
+    <h1>Hello World</h1>
+  </div>
+  <form action="" method="POST">
+    <input type="text" name="name">
+    <input type="submit">
+  </form>
+  {% for user in users %}
+  <div class="page-header">
+    <h2>{{ user.username }}</h2>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

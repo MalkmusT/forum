@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# IntelliJ / PyCharm project stuff
+.idea
+
+# python helper tools
+/.coverage
+/.ropeproject
+
+# ignore node for now
+node_modules
+# python virtualenv
+/env
+
+# develop installation
+forum.egg-info
+
+# temp files
+*.swp
