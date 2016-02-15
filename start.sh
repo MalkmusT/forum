@@ -5,4 +5,5 @@ if [ ! -d "env" ]; then
   env/bin/pip install -r requirements.pip
 fi
 
+env/bin/python initdb.py
 env/bin/python run.py
