@@ -5,13 +5,14 @@ DATABASE="mydb"
 VTXCOLLECTION="MyVertices"
 EDGECOLLECTION="MyEdges"
 GRAPH="MyGraph"
+ARANGOURL='http://localhost:8001'
 
 app = Flask( __name__ )
-conn = Connection()
+conn = Connection( arangoURL=ARANGOURL)
 db = conn[ DATABASE ]
 vtx = db[ VTXCOLLECTION ]
 edges = db[ EDGECOLLECTION ]
-graph = dg[ GRAPH ]
+graph = db[ GRAPH ]
 
 @app.route("/")
 def home_view () :
