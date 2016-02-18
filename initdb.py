@@ -1,13 +1,25 @@
 from pyArango.connection import *
+from pyArango.collection import Collection, Field, Edges
+from pyArango.graph import Graph, EdgeDefinition
 
-DATABASE="mydb"
-VTXCOLLECTION="MyVertices"
-EDGECOLLECTION="MyEdges"
-GRAPH="MyGraph"
 
 # set URL for Arangodb database server
 ARANGOURL='http://localhost:8001'
-conn = Connection( arangoURL=ARANGOURL )
+conn = Connection( arangoURL = ARANGOURL )
+
+DATABASE="mydb"
+VTXCOLLECTION="MyVertices"
+
+class Connection(Edges):
+    _field = { 'weight' : Field() }
+
+EDGECOLLECTION="Connection"
+
+class MyGraph(Graph):
+    _edgeDefinitions =( EdgeDefinition( "Connection", fromCollections = [ VTXCOLLECTION ], toCollections = [ VTXCOLLECTION ] ), )
+    _orphanedCollections = []
+
+GRAPH="MyGraph"
 
 if conn.hasDatabase( name=DATABASE ) :
     db = conn[ DATABASE ]
@@ -25,18 +37,16 @@ else:
         doc._key = "Key_%d" %i
         doc.save()
 
-if not db.hasCollection( name=EDGECOLLECTION ):
-    edges = db.createCollection( name=EDGECOLLECTION )
-else:
+if db.hasCollection( EDGECOLLECTION ):
     edges = db[ EDGECOLLECTION ]
+else:
+    edges = db.createCollection( EDGECOLLECTION )
 
 if db.hasGraph( name = GRAPH ):
-    graph = db[ GRAPH ]
+    graph = db.graphs[ GRAPH ]
 else:
     graph = db.createGraph( name=GRAPH )
-    for doc in collection.fetchAll():
-        vtx = graph.creatVertex( edges, doc )
     for i in range(10):
         doc1 = collection[ "Key_%d" %i ] 
         doc2 = collection[ "Key_%d" %(i+1) ] 
-        graph.link( edges, doc1, doc2, { "weight" : 0.5 })
+        graph.link( EDGECOLLECTION, doc1, doc2, { "weight" : 0.5 })
